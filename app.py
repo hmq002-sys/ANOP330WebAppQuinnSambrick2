@@ -2,19 +2,19 @@ import streamlit as st
 import pandas as pd
 import pickle
 
-st.title("Simple Test")
+st.title("Reunion Predictor")
 
+# Check if files exist
+import os
+st.write("Files available:", os.listdir())
+
+# Try loading model
 try:
-    # Try loading without sklearn
-    with open("model.pkl", "rb") as f:
-        model = pickle.load(f)
-    st.write("Model type:", type(model))
-    
-    # Test prediction
-    import numpy as np
-    test_input = [[5, 2000, 1, 0]]
-    prob = model.predict_proba(test_input)[0][1]
-    st.write(f"Test prediction: {prob:.1%}")
-    
+    if os.path.exists("model.pkl"):
+        model = pickle.load(open("model.pkl", "rb"))
+        st.success("Model loaded!")
+        st.write("Model type:", type(model))
+    else:
+        st.error("model.pkl not found")
 except Exception as e:
-    st.write("Error:", str(e))
+    st.error(f"Load error: {e}")
